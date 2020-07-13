@@ -22,15 +22,32 @@ data.head()
 data['DEX']=np.select([data['Prev Close'] < data['Close'],data['Prev Close'] > data['Close']],[1,-1],1)
 print(data.head())
 
+X=pd.DataFrame(data[['High','Low','Open','Close']])
+y=pd.DataFrame(data.iloc[:,-1])
 
-# In[22]:
-
-X_train,X_test=train_test_split(data,test_size=0.2,random_state=42)
-print(len(X_train))
+#split training and testing data
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=5)
+print(X_train)
 print(len(X_test))
+print(y_train)
+print(len(y_test))
 
+#Random Forest Classifier
+from sklearn.ensemble import RandomForestClassifier
+#Create a Gaussian Classifier
+clf=RandomForestClassifier(n_estimators=100)
+#print(clf)
 
-# In[ ]:
+#Train the model using the training sets y_pred=clf.predict(X_test)
+clf.fit(X_train,y_train)
+
+# prediction on test set
+y_pred=clf.predict(X_test)
+
+#Import scikit-learn metrics module for accuracy calculation
+from sklearn import metrics
+# Model Accuracy, how often is the classifier correct?
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 
 
