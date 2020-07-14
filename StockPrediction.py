@@ -17,8 +17,27 @@ data= pd.read_csv("TITAN.csv")
 data.head()
 
 
-# In[16]:
+#histogram for high-low
+df=pd.DataFrame(data[['High','Low']])
+print(df.head())
+ax = df.plot.hist(bins=12, alpha=0.5)
 
+#histogram for open close
+df1=pd.DataFrame(data[['Open','Close']])
+print(df1.head())
+ax = df1.plot.hist(bins=12, alpha=0.5)
+
+#The above two figures are histograms plotted between
+#CLOSE and OPEN and the attributes HIGH and
+#LOW. This is done because we believe today's closing
+#price and opening price along with the high and lowest price
+#of the stock during last year will affect the price of the stock
+#at a later date. Based on such reasoning we devised a logic
+#if today's CLOSE is greater than yesterday's CLOSE
+#then we assign the value 1 to DEX or else we assign the
+#value -1 to DEX
+
+#generate dex column
 data['DEX']=np.select([data['Prev Close'] < data['Close'],data['Prev Close'] > data['Close']],[1,-1],1)
 print(data.head())
 
